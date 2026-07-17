@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Installs and configures Nginx to serve "Holberton School for the win!"
+
+# Update package list
+apt-get update -y
+
+# Install Nginx
+apt-get install -y nginx
+
+# Configure the default web page
+echo "Holberton School for the win!" > /var/www/html/index.html
+
+# Start or restart Nginx (without systemctl)
+service nginx start || service nginx restart
