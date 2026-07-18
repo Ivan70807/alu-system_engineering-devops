@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+# Configures Nginx to redirect /redirect_me with a 301 status code
 
-apt-get -y update
-apt-get -y install nginx
+apt-get update -y
+apt-get install -y nginx
 
 sed -i '/server_name _;/a\
 \
