@@ -1,32 +1,30 @@
 #!/usr/bin/env bash
-# Creating a server with a redirect
+# Configures Nginx so that /redirect_me returns a 301 redirect
 
-# Updating all packages
-sudo apt-get update -y && sudo apt-get upgrade -y
+# Install nginx if not already installed
+apt-get update -y
+apt-get install -y nginx
 
-# Install Nginx
-sudo apt-get install nginx -y
+CONFIG_FILE="/etc/nginx/sites-available/default"
 
-# Creating an index page
-echo "Holberton School" | sudo tee /var/www/html/index.html
+# Back up the original config once
+cp -n "$CONFIG_FILE" "${CONFIG_FILE}.orig"
 
-# Write data to nginx.conf
-echo "
-events {
+# Remove any redirect_me block we may have previously inserted (idempotency)
+sed -i '/location ~ \^\/redirect_me/,/^\t}/d' "$CONFIG_FILE"
 
-}
+# Insert the redirect location block right before "location / {"
+sed -i '/location \/ {/i\
+\tlocation ~ ^/redirect_me/?$ {\
+\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\
+\t}
+' "$CONFIG_FILE"
 
-http {
-	server {
-		listen 80;
+# Validate config before restarting
+nginx -t
 
-		root /var/www/html;
+# Start (or restart) nginx
+service nginx start || service nginx restart
+service nginx restart
 
-		location /redirect_me {
-			return 301 https://google.com;
-		}
-	}
-}" | sudo tee /etc/nginx/nginx.conf
-
-# Reload nginx
-sudo service nginx restart
+exit 0
