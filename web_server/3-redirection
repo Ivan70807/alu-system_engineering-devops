@@ -10,11 +10,26 @@ CONFIG_FILE="/etc/nginx/sites-available/default"
 # Back up the original config once
 cp -n "$CONFIG_FILE" "${CONFIG_FILE}.orig"
 
-# Remove any redirect_me block we may have previously inserted (idempotency)
-sed -i '/location ~ \^\/redirect_me/,/}/d' "$CONFIG_FILE"
+# Write a complete, known-good default server config
+cat > "$CONFIG_FILE" <<'EOF'
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
 
-# Insert the redirect location block right before "location / {" (single line, no backslash continuations)
-sed -i '/location \/ {/i\    location ~ ^/redirect_me/?$ { return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4; }' "$CONFIG_FILE"
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location ~ ^/redirect_me/?$ {
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+	}
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+EOF
 
 # Validate config before restarting
 nginx -t
