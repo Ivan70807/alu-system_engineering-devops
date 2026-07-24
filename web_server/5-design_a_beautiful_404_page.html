@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>404 — Ceci n'est pas une page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#9fc3dd;
+    --sky-bottom:#cfe1ea;
+    --cloud:#f6f4ee;
+    --wood:#4a2f22;
+    --wood-light:#6b4530;
+    --ink:#2c2620;
+    --frame:#e9e4d8;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    margin:0;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% -10%, #ffffff33, transparent 60%),
+      linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+    font-family:'Cormorant Garamond', Georgia, serif;
+    color:var(--ink);
+    overflow:hidden;
+    position:relative;
+    padding:24px;
+  }
+
+  /* drifting painterly clouds */
+  .cloud{
+    position:absolute;
+    background:var(--cloud);
+    border-radius:50%;
+    filter:blur(1px);
+    opacity:.9;
+    animation:drift 90s linear infinite;
+  }
+  .cloud::before,.cloud::after{
+    content:"";
+    position:absolute;
+    background:var(--cloud);
+    border-radius:50%;
+  }
+  .c1{ width:180px; height:60px; top:12%; left:-220px; }
+  .c1::before{ width:100px; height:80px; top:-40px; left:20px; }
+  .c1::after{ width:90px; height:70px; top:-25px; left:100px; }
+  .c2{ width:140px; height:46px; top:70%; left:-220px; animation-duration:130s; animation-delay:-40s; }
+  .c2::before{ width:80px; height:60px; top:-30px; left:15px; }
+  .c2::after{ width:70px; height:50px; top:-20px; left:80px; }
+  .c3{ width:110px; height:38px; top:38%; left:-220px; animation-duration:110s; animation-delay:-15s; }
+  .c3::before{ width:65px; height:48px; top:-24px; left:10px; }
+  .c3::after{ width:55px; height:40px; top:-16px; left:65px; }
+
+  @keyframes drift{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(calc(100vw + 260px)); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cloud{ animation:none; }
+  }
+
+  /* the painting: an easel-framed canvas */
+  .easel{
+    position:relative;
+    z-index:2;
+    width:min(560px, 92vw);
+    padding:28px 28px 34px;
+    background:var(--frame);
+    border-radius:4px;
+    box-shadow:
+      0 30px 60px -20px rgba(20,15,10,0.35),
+      0 2px 0 rgba(255,255,255,0.6) inset;
+  }
+
+  .canvas{
+    background:
+      radial-gradient(ellipse at 50% 20%, #b7d3e8, #9fc3dd 55%, #8fb6d6 100%);
+    border-radius:2px;
+    padding:56px 32px 40px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.06),
+      inset 0 12px 30px rgba(0,0,0,0.06);
+    position:relative;
+    text-align:center;
+  }
+
+  .pipe-wrap{
+    width:220px;
+    margin:0 auto 8px;
+  }
+
+  .pipe-wrap svg{
+    width:100%;
+    height:auto;
+    filter:drop-shadow(0 10px 14px rgba(30,20,10,0.25));
+  }
+
+  .code{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.5em;
+    color:var(--wood-light);
+    margin:26px 0 6px;
+    text-transform:uppercase;
+  }
+
+  .caption{
+    font-family:'Caveat', cursive;
+    font-size:clamp(30px, 6vw, 40px);
+    color:var(--wood);
+    margin:6px 0 2px;
+    line-height:1.15;
+  }
+
+  .sub{
+    font-size:17px;
+    font-style:italic;
+    color:#3d3327;
+    opacity:.85;
+    margin:0 0 4px;
+  }
+
+  .plaque{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid rgba(74,47,34,0.25);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .plaque p{
+    margin:0;
+    font-size:14px;
+    letter-spacing:.03em;
+    color:#5a4c3c;
+  }
+
+  .home-link{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#fff;
+    background:var(--wood);
+    padding:9px 18px;
+    border-radius:2px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .home-link:hover{
+    background:var(--wood-light);
+    transform:translateY(-1px);
+  }
+  .home-link:focus-visible{
+    outline:3px solid #fff;
+    outline-offset:2px;
+  }
+
+  .status-code{
+    position:absolute;
+    top:-14px;
+    right:14px;
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:64px;
+    color:rgba(255,255,255,0.35);
+    line-height:1;
+    user-select:none;
+  }
+
+  @media (max-width:480px){
+    .plaque{ flex-direction:column; align-items:flex-start; }
+    .status-code{ font-size:44px; top:-8px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+
+  <main class="easel">
+    <div class="canvas">
+      <span class="status-code" aria-hidden="true">404</span>
+
+      <div class="pipe-wrap" aria-hidden="true">
+        <svg viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="120" cy="112" rx="150" ry="8" fill="rgba(20,15,10,0.08)"/>
+          <path d="M40 78 C40 60 55 48 78 48 L150 48 C162 48 172 40 172 28 C172 16 182 8 194 8 C206 8 216 18 216 30 C216 46 202 56 186 58 L84 58 C64 58 50 66 50 80 C50 92 60 100 74 100 L118 100"
+                fill="none" stroke="#4a2f22" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M172 28 C172 16 182 8 194 8 C206 8 216 18 216 30 C216 44 204 54 190 56"
+                fill="none" stroke="#3a241a" stroke-width="7" stroke-linecap="round"/>
+          <ellipse cx="196" cy="30" rx="19" ry="21" fill="#5c3a28" stroke="#3a241a" stroke-width="2"/>
+          <ellipse cx="196" cy="22" rx="13" ry="6" fill="#2f2015"/>
+        </svg>
+      </div>
+
+      <p class="code">Erreur 404</p>
+      <p class="caption">Ceci n'est pas une page.</p>
+      <p class="sub">— nor, it turns out, is anything else at this address.</p>
+
+      <div class="plaque">
+        <p>René n'aurait pas menti.<br>The page you're looking for was never painted.</p>
+        <a class="home-link" href="/">Return home</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
